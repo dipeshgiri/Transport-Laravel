@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 use App\invoice;
 use App\invoicetotal;
 use App\Rules\name;
+use App;
+
 class invoicesubmit extends Controller
 {
     public function submit(Request $req)
@@ -59,6 +63,10 @@ class invoicesubmit extends Controller
         $invoice1->item_type=$req->itemtype2;
         $invoice1->save();
     }
+    else
+    {
+        $req->itemtype2=NULL;
+    }
 
         if($req->SN3 && $req->Particulars3)
         {
@@ -83,8 +91,12 @@ class invoicesubmit extends Controller
         $invoice2->amount=$req->Amount3;
         $invoice2->item_type=$req->itemtype3;
         $invoice2->save();
-
         }
+
+    else
+    {
+        $req->itemtype3=NULL;
+    }
 
         if($req->SN4 && $req->Particulars4)
         {
@@ -109,8 +121,12 @@ class invoicesubmit extends Controller
         $invoice3->amount=$req->Amount4;
         $invoice3->item_type=$req->itemtype4;
         $invoice3->save();
-
         }
+
+    else
+    {
+        $req->itemtype4=NULL;
+    }
 
         if($req->SN5 && $req->Particulars5)
         {
@@ -137,6 +153,11 @@ class invoicesubmit extends Controller
         $invoice4->save();
         }
 
+    else
+    {
+        $req->itemtype5=NULL;
+    }
+
 
         $invoicetotal=new invoicetotal;
         $invoicetotal->bilti_no=$req->Biltino;
@@ -148,13 +169,148 @@ class invoicesubmit extends Controller
         date_default_timezone_set("Asia/Kathmandu");
         $invoicetotal->timestamp=date("h:i:sa");
         $invoicetotal->save();
-        session(['Consignor'=>$req->Consignor,'ConsignorAdd'=>$req->ConsignorAddress,'Consignorpan'=>$req->Consignorpan,'Consignee'=>$req->Consignee,'ConsigneeAdd'=>$req->ConsigneeAddress,'Consigneepan'=>$req->Consigneepan,'Consignorbillno'=>$req->Consignorbillno,'Consignorbillamount'=>$req->Consignorbillamount,'Date'=>$req->Date,'modeofpayment'=>$req->modeofpayment,'biltino'=>$req->Biltino,'sn'=>$req->SN,'particulars'=>$req->Particulars,'Quantity'=>$req->Quantity,'itemtype'=>$req->itemtype,'Rate'=>$req->Rate,'Amount'=>$req->Amount,'Totalamt'=>$req->TotalAmt,'Taxableamt'=>$req->taxableamt,'vat'=>$req->vatamt,'Totalamtwithvat'=>$req->totalamtwithvat]);
-        return redirect()->action('invoicepdf@invoicepdf');
+        $createddate=date("h:i:sa");
+
+         $pdf=App::make('dompdf.wrapper');
+         $data="
+          <table style='border:none;'>
+         <tr><td><p style='font-size: 25px; margin-left: 220px; font-style:bold;'>Om Laxmi Dhuwani Sewa</p></td></tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Main Branch: Biratnagar</p></td>
+         <td><p style='font-size:15px; margin-top:0px; text-align:right;'>Birtamode Branch: Birtamode</p></td></tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Opposite Of Bijuli Office</p></td>
+         <td><p style='font-size:15px; margin-top:0px;'>Harkalal Marga</p></td>
+         </tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Phone Number: 9802723942/9802753385/021-535671</p></td>
+         <td><p style='font-size:15px; margin-top:0px;'>Phone Number:9852023942</p></td>
+         </tr>
+
+         <tr><td><p style='margin-top:0px; font-size:20px; font-style:bold; margin-left:310px;'>Invoice</p></td></tr>
+         <tr><td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Bilti Number: </label>$req->Biltino</p></td>
+
+       <td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Invoice-Date: </label> $req->Date</p></td>
+         </tr>
+         <hr>
+         </table>
+         <table style='border:none;'>
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor: </label> $req->Consignor</p></td>
+         <td><p style='font-size:14px; margin-left:100px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee: </label> $req->Consignee</p></td>
+         </tr>
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Address: </label> $req->ConsignorAddress</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Address: </label> $req->ConsigneeAddress</p></td>
+         </tr>
+
+                  <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Pan-No: </label> $req->Consignorpan</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Pan-No: </label> $req->Consigneepan</p></td>
+         </tr>
+                  <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Number: </label>$req->Consignorbillno</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Amount: </label> $req->Consignorbillamount</p></td>
+         </tr>
+
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Mode-Of-Payement: </label> $req->modeofpayment</p></td>
+         </tr>
+         <hr>
+         </table>
+         <table style='height:0mm; width:100%;'>
+         <br>
+         <style>
+         #data
+          {
+             border-bottom: 1px solid #ddd;
+                 }
+         </style>
+         <tr>
+         <th style='width:5%'  id='data'>SN</th>
+         <th style='width:30%' id='data'>Particulars</th>
+         <th style='width:20%' id='data'>Item-Type</th>
+         <th style='width:20%' id='data'>Quantity</th>
+         <th style='width:20%' id='data'>Rate</th>
+         <th style='width:20%' id='data'>Amount</th>
+         </tr>
+
+
+         <tr>
+         <td  style='text-align:center; ' id='data'> $req->SN</td>
+         <td  style='text-align:center; ' id='data'> $req->Particulars</td>
+         <td  style='text-align:center; ' id='data'> $req->itemtype</td>
+         <td  style='text-align:center; ' id='data'> $req->Quantity</td>
+         <td  style='text-align:center; ' id='data'> $req->Rate</td>
+         <td  style='text-align:center; ' id='data'> $req->Amount</td>
+         </tr>
         
+        <tr>
+         <td  style='text-align:center; ' id='data'> $req->SN2</td>
+         <td  style='text-align:center; ' id='data'> $req->Particulars2</td>
+         <td  style='text-align:center; ' id='data'> $req->itemtype2</td>
+         <td  style='text-align:center; ' id='data'> $req->Quantity2</td>
+         <td  style='text-align:center; ' id='data'> $req->Rate2</td>
+         <td  style='text-align:center; ' id='data'> $req->Amount2</td>
+        </tr>  
+
+        <tr>
+         <td  style='text-align:center; ' id='data'> $req->SN3</td>
+         <td  style='text-align:center; ' id='data'> $req->Particulars3</td>
+         <td  style='text-align:center; ' id='data'> $req->itemtype3</td>
+         <td  style='text-align:center; ' id='data'> $req->Quantity3</td>
+         <td  style='text-align:center; ' id='data'> $req->Rate3</td>
+         <td  style='text-align:center; ' id='data'> $req->Amount3</td>
+        </tr>
+        
+        <tr>
+         <td  style='text-align:center; ' id='data'> $req->SN4</td>
+         <td  style='text-align:center; ' id='data'> $req->Particulars4</td>
+         <td  style='text-align:center; ' id='data'> $req->itemtype4</td>
+         <td  style='text-align:center; ' id='data'> $req->Quantity4</td>
+         <td  style='text-align:center; ' id='data'> $req->Rate4</td>
+         <td  style='text-align:center; ' id='data'> $req->Amount4</td>
+        </tr>
+            
+        <tr>
+         <td  style='text-align:center; ' id='data'> $req->SN5</td>
+         <td  style='text-align:center; ' id='data'> $req->Particulars5</td>
+         <td  style='text-align:center; ' id='data'> $req->itemtype5</td>
+         <td  style='text-align:center; ' id='data'> $req->Quantity5</td>
+         <td  style='text-align:center; ' id='data'> $req->Rate5</td>
+         <td  style='text-align:center; ' id='data'> $req->Amount5</td>
+        </tr>
+            
+         </table>
+
+         <table>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Total Amount:  $req->TotalAmt</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Taxable Amount:  $req->taxableamt</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Vat:  $req->vatamt</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Total Amount With Vat:  $req->totalamtwithvat</p></td>
+         
+         </tr>
+         </table>
+         <p>Created By: Dipesh</p>
+         <p style='text-align:right'>Created At: {$createddate}</p>
+
+";
+         $pdf->loadHTML($data);
+         return $pdf->stream();
 
 
+    }
+    public function showallinvoice(Request $req)
+    {
+        $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->paginate(10);
+        return view('/showallinvoice',['data'=>$result]);
 
     }
 
 
 }
+?>

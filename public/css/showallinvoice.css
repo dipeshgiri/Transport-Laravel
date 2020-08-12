@@ -1,0 +1,36 @@
+h1
+{
+	font-style:bold;
+	font-family: serif;
+	margin-top:10px;
+	font-size:55px;
+}
+.address
+{
+	font-size:25px;
+	font-family:serif;
+	text-align:center;
+}
+.date
+{
+	text-align: left;
+	font-weight:bold;
+}
+.contact
+{
+	font-size:20px;
+	text-align:center;
+	font-family: serif;
+}
+.record
+{
+	font-style:italic;
+	font-weight: bold;
+	font-size:25px;
+	text-align:center;
+}
+#page
+{
+	text-align:left;
+	font-weight:bold;
+}

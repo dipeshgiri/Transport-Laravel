@@ -21,4 +21,9 @@ Route::view('/home','home');
 //invoice page
 Route::view('/invoice','invoice');
 Route::post("/submit",'invoicesubmit@submit');
-Route::get('/pdf','invoicepdf@invoicepdf');		
+Route::view('/searchinvoice','searchinvoice');
+//invoice search
+//show all invoice
+Route::get('/showallinvoice','invoicesubmit@showallinvoice');
+
+?>

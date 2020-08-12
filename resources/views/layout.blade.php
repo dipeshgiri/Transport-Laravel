@@ -25,6 +25,7 @@
             <li class="nav-item"><a class="nav-link " href="chalan" style="color:white;"><i class="fa fa-address-card"></i> Chalan</a></li>
             <li class="nav-item"><a class="nav-link " href="searchinvoice" style="color:white;"><i class="fa fa-search-plus"></i> Search Invoice</a></li>
             <li class="nav-item"><a class="nav-link " href="searchchalan" style="color:white;"><i class="fa fa-search"></i> Search Chalan</a></li>
+             <li class="nav-item"><a class="nav-link " href="PartyPaymentDetails" style="color:white;"><i class="fa fa-money"></i> Party Payment Details</a></li>
             <li class="nav-item"><a class="nav-link " href="vat" style="color:white;"><i class="fa fa-file"></i> Vat </a></li>
             <li class="nav-item"><a class="nav-link " href="blockuser" style="color:white;"><i class="fa fa-ban"></i> Log Out</a></li>
             </ul>
