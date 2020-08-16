@@ -19,7 +19,7 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
           <h2 style="color:white; font-style: sans-serif; font-size: 20px; margin-left:5px;">Om Laxmi Transport</h2>
-          <p style="color:white; font-style:sans-serif; font-size:18px; margin-left: 30px; margin-top:10px;">Welcome Dipesh</p>
+          <p style="color:white; font-style:sans-serif; font-size:18px; margin-left: 30px; margin-top:10px;">Welcome {{session('data')}}</p>
             <li class="nav-item"><a class="nav-link" href="home" style="color:white; margin-top:30px;"><i class="fa fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link" href="invoice" style="color:white;"><i class="fa fa-address-card-o"></i> Invoice</a></li>
             <li class="nav-item"><a class="nav-link " href="chalan" style="color:white;"><i class="fa fa-address-card"></i> Chalan</a></li>
@@ -27,7 +27,7 @@
             <li class="nav-item"><a class="nav-link " href="searchchalan" style="color:white;"><i class="fa fa-search"></i> Search Chalan</a></li>
              <li class="nav-item"><a class="nav-link " href="PartyPaymentDetails" style="color:white;"><i class="fa fa-money"></i> Party Payment Details</a></li>
             <li class="nav-item"><a class="nav-link " href="vat" style="color:white;"><i class="fa fa-file"></i> Vat </a></li>
-            <li class="nav-item"><a class="nav-link " href="blockuser" style="color:white;"><i class="fa fa-ban"></i> Log Out</a></li>
+            <li class="nav-item"><a class="nav-link " href="logout" style="color:white;"><i class="fa fa-ban"></i> Log Out</a></li>
             </ul>
           </div>
            </nav> <!--end of the 1st column side bar-->

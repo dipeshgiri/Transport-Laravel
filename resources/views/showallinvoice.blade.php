@@ -1,8 +1,19 @@
 @extends('layout')
 @section('content')
+
 <link rel="stylesheet" href="css/showallinvoice.css">
 <!--start of the 2nd column of side bar-->
 <div class="col-sm-9 col-md-10" style="background-color: white;">
+
+@if(Session::get('status'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+<strong>Success!</strong> Invoice Data Updated Successfully.
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+@endif
+
 	<h1 class="text-center">Om Laxmi Dhuwani Sewa</h1>
 	<p class="address">Biratnagar,Opposite Of Nepal Electricity Authority</p>
 	<p class="contact">Contact Number:021-535671/9802723942/9802753385</p>
@@ -25,6 +36,7 @@
 			<th class="col">Mode Of Payment</th>
 			<th class="col">SN</th>
 			<th class="col">Particulars</th>
+			<th class="col">Item Type</th>
 			<th class="col">Quantity</th>
 			<th class="col">Rate</th>
 			<th class="col">Amount</th>
@@ -54,6 +66,7 @@
 	    <td>{{$datas->mode_of_payment}}</td>
 	    <td>{{$datas->sn}}</td>
 	    <td>{{$datas->particulars}}</td>
+	    <td>{{$datas->item_type}}</td>
 	    <td>{{$datas->quantity}}</td>
 	    <td>{{$datas->rate}}</td>
 	    <td>{{$datas->amount}}</td>
@@ -62,9 +75,9 @@
 	    <td>{{$datas->vat}}</td>
 	    <td>{{$datas->totalamtwithvat}}</td>
 	    <td>{{$datas->gadi_no}}</td>
-	    <td><a href="" class="btn btn-success btn-sm" style="margin-bottom:10px;">Edit</a></td>
-	    <td><a href="" class="btn btn-danger btn-sm" style="margin-bottom:10px;">Delete</a></td>
-	    <td><a href="" class="btn btn-info btn-sm" style="margin-bottom:10px;">PDF</a></td>
+	    <td><a href="edit/{{$datas->bilti_no}}" class="btn btn-success btn-sm" style="margin-bottom:10px;">Edit</a></td>
+	    <td><a href="delete/{{$datas->bilti_no}}" class="btn btn-danger btn-sm" style="margin-bottom:10px;">Delete</a></td>
+	    <td><a href="pdf/{{$datas->bilti_no}}" class="btn btn-info btn-sm" style="margin-bottom:10px;">PDF</a></td>
 	</tr>
 	@endforeach
 	</table>

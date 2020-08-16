@@ -15,7 +15,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
+})->middleware('duplicatelogin');
+//Register User
+Route::view('/register',"register");
+Route::post('/registeruser',"loginsession@register");
+//login check
+Route::post('/logincheck',"loginsession@logincheck");
+
+//logout
+Route::get('/logout',function()
+{
+	session()->forget('data');
+	return redirect('/');
 });
+
+//session starts
+
+Route::group(['middleware'=>['loginchecker']],function()
+{
 //Dashboard
 Route::view('/home','home');
 //invoice page
@@ -24,6 +41,15 @@ Route::post("/submit",'invoicesubmit@submit');
 Route::view('/searchinvoice','searchinvoice');
 //invoice search
 //show all invoice
-Route::get('/showallinvoice','invoicesubmit@showallinvoice');
+Route::get('/showallinvoice','invoicesubmit@showallinvoice');	
 
+//edit invoice
+Route::get('/edit/{id}','invoicesubmit@editinvoice');
+Route::post("/update","invoicesubmit@updateinvoice");
+
+//delete invoice
+Route::get('/delete/{id}','invoicesubmit@deleteinvoice');
+//pdf invoice
+Route::get('/pdf/{id}','invoicesubmit@invoicepdf');
+});
 ?>

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\invoice;
 use App\invoicetotal;
 use App\Rules\name;
 use App;
+use log;
 
 class invoicesubmit extends Controller
 {
@@ -165,11 +167,13 @@ class invoicesubmit extends Controller
         $invoicetotal->taxable_amt=$req->taxableamt;
         $invoicetotal->vat=$req->vatamt;
         $invoicetotal->totalamtwithvat=$req->totalamtwithvat;
-        $invoicetotal->user="Dipesh";
+        $invoicetotal->user=session('data');
         date_default_timezone_set("Asia/Kathmandu");
         $invoicetotal->timestamp=date("h:i:sa");
         $invoicetotal->save();
         $createddate=date("h:i:sa");
+        log::logs("New Invoice Created ;BiltiNo:$req->Biltino;Consignor:$req->Consignor;Consignee:$req->Consignee");
+        $username=session('data');
 
          $pdf=App::make('dompdf.wrapper');
          $data="
@@ -295,20 +299,64 @@ class invoicesubmit extends Controller
          
          </tr>
          </table>
-         <p>Created By: Dipesh</p>
+         <p>Created By: {$username}</p>
          <p style='text-align:right'>Created At: {$createddate}</p>
 
 ";
          $pdf->loadHTML($data);
          return $pdf->stream();
-
-
     }
+
     public function showallinvoice(Request $req)
     {
         $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->paginate(10);
+        log::logs("Viewed The All Invoices");
         return view('/showallinvoice',['data'=>$result]);
+    }
 
+    public function editinvoice($id)
+    {
+        $data=DB::table('invoice')->where('bilti_no',$id)->get();
+        $data2=invoicetotal::where('bilti_no',$id)->get();
+        log::logs("Goes To Edit Page For Bilti No: $id");
+        return view('/editinvoice',['data'=>$data,'data2'=>$data2]);
+    }
+
+    public function updateinvoice(Request $req)
+    {
+
+    invoice::where('id',$req->input('id'))->update(['consignor'=>$req->input('Consignor'),'consignor_address'=>$req->input('ConsignorAddress'),'consignor_pan_no'=>$req->input('Consignorpan'),'consignee'=>$req->input('Consignee'),'consignee_address'=>$req->input('ConsigneeAddress'),'consignee_pan_no'=>$req->input('Consigneepan'),'consignor_bill_no'=>$req->input('Consignorbillno'),'consignor_bill_amount'=>$req->input('Consignorbillamount'),'date'=>$req->input('Date'),'mode_of_payment'=>$req->input('modeofpayment'),'bilti_no'=>$req->input('Biltino'),'sn'=>$req->input('SN'),'particulars'=>$req->input('Particulars'),'quantity'=>$req->input('Quantity'),'rate'=>$req->input('Rate'),'amount'=>$req->input('Amount'),'item_type'=>$req->input('itemtype')]);
+
+    if($req->input('id1')!=NULL)      
+    {
+     invoice::where('id',$req->input('id1'))->update(['consignor'=>$req->input('Consignor'),'consignor_address'=>$req->input('ConsignorAddress'),'consignor_pan_no'=>$req->input('Consignorpan'),'consignee'=>$req->input('Consignee'),'consignee_address'=>$req->input('ConsigneeAddress'),'consignee_pan_no'=>$req->input('Consigneepan'),'consignor_bill_no'=>$req->input('Consignorbillno'),'consignor_bill_amount'=>$req->input('Consignorbillamount'),'date'=>$req->input('Date'),'mode_of_payment'=>$req->input('modeofpayment'),'bilti_no'=>$req->input('Biltino'),'sn'=>$req->input('SN2'),'particulars'=>$req->input('Particulars2'),'quantity'=>$req->input('Quantity2'),'rate'=>$req->input('Rate2'),'amount'=>$req->input('Amount2'),'item_type'=>$req->input('itemtype2')]);
+
+
+    if($req->input('id2')!=NULL)      
+    {
+     invoice::where('id',$req->input('id2'))->update(['consignor'=>$req->input('Consignor'),'consignor_address'=>$req->input('ConsignorAddress'),'consignor_pan_no'=>$req->input('Consignorpan'),'consignee'=>$req->input('Consignee'),'consignee_address'=>$req->input('ConsigneeAddress'),'consignee_pan_no'=>$req->input('Consigneepan'),'consignor_bill_no'=>$req->input('Consignorbillno'),'consignor_bill_amount'=>$req->input('Consignorbillamount'),'date'=>$req->input('Date'),'mode_of_payment'=>$req->input('modeofpayment'),'bilti_no'=>$req->input('Biltino'),'sn'=>$req->input('SN3'),'particulars'=>$req->input('Particulars3'),'quantity'=>$req->input('Quantity3'),'rate'=>$req->input('Rate3'),'amount'=>$req->input('Amount3'),'item_type'=>$req->input('itemtype3')]);
+
+
+    if($req->input('id3')!=NULL)      
+    {
+     invoice::where('id',$req->input('id3'))->update(['consignor'=>$req->input('Consignor'),'consignor_address'=>$req->input('ConsignorAddress'),'consignor_pan_no'=>$req->input('Consignorpan'),'consignee'=>$req->input('Consignee'),'consignee_address'=>$req->input('ConsigneeAddress'),'consignee_pan_no'=>$req->input('Consigneepan'),'consignor_bill_no'=>$req->input('Consignorbillno'),'consignor_bill_amount'=>$req->input('Consignorbillamount'),'date'=>$req->input('Date'),'mode_of_payment'=>$req->input('modeofpayment'),'bilti_no'=>$req->input('Biltino'),'sn'=>$req->input('SN4'),'particulars'=>$req->input('Particulars4'),'quantity'=>$req->input('Quantity4'),'rate'=>$req->input('Rate4'),'amount'=>$req->input('Amount4'),'item_type'=>$req->input('itemtype4')]);
+
+
+    if($req->input('id4')!=NULL)      
+    {
+     invoice::where('id',$req->input('id4'))->update(['consignor'=>$req->input('Consignor'),'consignor_address'=>$req->input('ConsignorAddress'),'consignor_pan_no'=>$req->input('Consignorpan'),'consignee'=>$req->input('Consignee'),'consignee_address'=>$req->input('ConsigneeAddress'),'consignee_pan_no'=>$req->input('Consigneepan'),'consignor_bill_no'=>$req->input('Consignorbillno'),'consignor_bill_amount'=>$req->input('Consignorbillamount'),'date'=>$req->input('Date'),'mode_of_payment'=>$req->input('modeofpayment'),'bilti_no'=>$req->input('Biltino'),'sn'=>$req->input('SN5'),'particulars'=>$req->input('Particulars5'),'quantity'=>$req->input('Quantity5'),'rate'=>$req->input('Rate5'),'amount'=>$req->input('Amount5'),'item_type'=>$req->input('itemtype5')]);
+
+    }
+
+}
+}
+}
+     invoicetotal::where('id',$req->input('ids'))->update(['bilti_no'=>$req->input('Biltino'),'total_amt'=>$req->input('TotalAmt'),'taxable_amt'=>$req->input('taxableamt'),'vat'=>$req->input('vatamt'),'totalamtwithvat'=>$req->input('totalamtwithvat')]);
+
+     log::logs("Invoice Data Updated (Edited) BiltiNumber:$req->Biltino, id:$req->id, Consignor:$req->Consignor");
+
+    $req->session()->flash('status','Invoice Data Updated Successfully');
+    return redirect('/showallinvoice');
     }
 
 

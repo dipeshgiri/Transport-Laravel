@@ -1,0 +1,31 @@
+#body
+{
+	background-color: #203354;
+	font-family:sans-serif;
+	margin:0;
+	padding:0;
+}
+.containers
+{
+	width:500px;
+	height:450px;
+	background-color: #203354;
+	position:absolute;
+	top:20%;
+	left:35%;
+	box-shadow: 0px 8px 10px rgba(0,0,0,0.8);
+
+}
+.containers h3
+{
+	text-align:center;
+	color:white;
+}
+#name,#email,#password
+{
+	color:white;
+}
+#button
+{
+	margin-left:200px;
+}
