@@ -51,5 +51,7 @@ Route::post("/update","invoicesubmit@updateinvoice");
 Route::get('/delete/{id}','invoicesubmit@deleteinvoice');
 //pdf invoice
 Route::get('/pdf/{id}','invoicesubmit@invoicepdf');
+//All Invoice Pdf
+Route::get('/allinvoicepdf','invoicesubmit@allinvoicepdf');
 });
 ?>

@@ -2,12 +2,23 @@
 @section('content')
 
 <link rel="stylesheet" href="css/showallinvoice.css">
+
+
 <!--start of the 2nd column of side bar-->
 <div class="col-sm-9 col-md-10" style="background-color: white;">
 
-@if(Session::get('status'))
+@if(Session::get('update'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
 <strong>Success!</strong> Invoice Data Updated Successfully.
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+@endif
+
+@if(Session::get('delete'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<strong>Sucess!</strong> Invoice Data Deleted Successfully.
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
@@ -18,7 +29,7 @@
 	<p class="address">Biratnagar,Opposite Of Nepal Electricity Authority</p>
 	<p class="contact">Contact Number:021-535671/9802723942/9802753385</p>
 	<p class="record">Invoice Records</p>
-	<a href="" class="btn btn-primary">Export As PDF</a>
+	<a href="/allinvoicepdf" class="btn btn-primary">Export As PDF</a>
 	<br><br>
 	<table class="table table-lg" id="table"> 
 	<thead>
@@ -75,9 +86,9 @@
 	    <td>{{$datas->vat}}</td>
 	    <td>{{$datas->totalamtwithvat}}</td>
 	    <td>{{$datas->gadi_no}}</td>
-	    <td><a href="edit/{{$datas->bilti_no}}" class="btn btn-success btn-sm" style="margin-bottom:10px;">Edit</a></td>
-	    <td><a href="delete/{{$datas->bilti_no}}" class="btn btn-danger btn-sm" style="margin-bottom:10px;">Delete</a></td>
-	    <td><a href="pdf/{{$datas->bilti_no}}" class="btn btn-info btn-sm" style="margin-bottom:10px;">PDF</a></td>
+	    <td><a href="edit/{{$datas->bilti_no}}" class="btn btn-success btn-sm">Edit</a></td>
+	    <td><a href="delete/{{$datas->bilti_no}}" class="btn btn-danger btn-sm">Delete</a></td>
+        <td><a href="pdf/{{$datas->bilti_no}}" class="btn btn-info btn-sm" >PDF</a></td>
 	</tr>
 	@endforeach
 	</table>

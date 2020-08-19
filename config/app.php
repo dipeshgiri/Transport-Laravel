@@ -162,7 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
-
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -178,7 +178,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\CustomFacadesProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
     ],
 
     /*
@@ -232,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF'=>Barryvdh\DomPDF\ServiceProvider::class,
         'log'=>App\Logs\logfacades::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
     ],
 

@@ -11,6 +11,8 @@ use App\invoicetotal;
 use App\Rules\name;
 use App;
 use log;
+use PDF;
+use session;
 
 class invoicesubmit extends Controller
 {
@@ -355,9 +357,290 @@ class invoicesubmit extends Controller
 
      log::logs("Invoice Data Updated (Edited) BiltiNumber:$req->Biltino, id:$req->id, Consignor:$req->Consignor");
 
-    $req->session()->flash('status','Invoice Data Updated Successfully');
+    $req->session()->flash('update','Invoice Data Updated Successfully');
     return redirect('/showallinvoice');
     }
+
+    public function deleteinvoice(Request $req,$id)
+    {
+        invoice::where('bilti_no',$id)->delete();
+        invoicetotal::where('bilti_no',$id)->delete();
+        log::logs("Invoice Deleted BiltiNo: $id");
+        $req->session()->flash('delete','Invoice Deleted Successfully');
+        return redirect('/showallinvoice');
+
+    }
+
+    public function invoicepdf(Request $req,$id)
+    {
+        $invoicedata=DB::table('invoice')->where('bilti_no',$id)->get();
+        $invoicetotal=DB::table('invoicetotal')->where('bilti_no',$id)->get();
+        
+        $consignor=$invoicedata[0]->consignor;
+        $consignoradd=$invoicedata[0]->consignor_address;
+        $consignorpan=$invoicedata[0]->consignor_pan_no;
+        
+        $consignee=$invoicedata[0]->consignee;
+        $consigneeadd=$invoicedata[0]->consignee_address;
+        $consigneepan=$invoicedata[0]->consignee_pan_no;
+        
+        $consignorbill=$invoicedata[0]->consignor_bill_no;
+        $consignorbillamt=$invoicedata[0]->consignor_bill_amount;
+
+        $date=$invoicedata[0]->date;
+        $biltino=$invoicedata[0]->bilti_no;
+        $modeofpayment=$invoicedata[0]->mode_of_payment;
+
+        $sn=$invoicedata[0]->sn;
+        $particulars=$invoicedata[0]->particulars;
+        $quantity=$invoicedata[0]->quantity;
+        $rate=$invoicedata[0]->rate;
+        $amount=$invoicedata[0]->amount;
+        $itemtype=$invoicedata[0]->item_type;
+
+        if(isset($invoicedata[1]->particulars))
+        {
+
+             $sn1=$invoicedata[1]->sn;
+             $particulars1=$invoicedata[1]->particulars;
+             $quantity1=$invoicedata[1]->quantity;
+             $rate1=$invoicedata[1]->rate;
+             $amount1=$invoicedata[1]->amount;
+             $itemtype1=$invoicedata[1]->item_type;
+
+        }
+
+         else
+             {
+                $sn1=null;
+                $particulars1=null;
+                $quantity1=null;
+                $rate1=null;
+                $amount1=0;
+                $itemtype1=null;
+
+             }
+
+             if(isset($invoicedata[2]->particulars))
+             {
+                 $sn2=$invoicedata[2]->sn;
+                 $particulars2=$invoicedata[2]->particulars;
+                 $quantity2=$invoicedata[2]->quantity;
+                 $rate2=$invoicedata[2]->rate;
+                 $amount2=$invoicedata[2]->amount;
+                 $itemtype2=$invoicedata[2]->item_type;
+
+                         }
+             else
+             {
+                $sn2=null;
+                $particulars2=null;
+                $quantity2=null;
+                $rate2=null;
+                $amount2=0;
+                $itemtype2=null;
+
+             }
+
+
+
+                 if(isset($invoicedata[3]->particulars))
+             {
+                 $sn3=$invoicedata[3]->sn;
+                 $particulars3=$invoicedata[3]->particulars;
+                 $quantity3=$invoicedata[3]->quantity;
+                 $rate3=$invoicedata[3]->rate;
+                 $amount3=$invoicedata[3]->amount;
+                 $itemtype3=$invoicedata[3]->item_type;
+                 }
+
+             else
+             {
+                $sn3=null;
+                $particulars3=null;
+                $quantity3=null;
+                $rate3=null;
+                $amount3=0;
+                $itemtype3=null;
+
+             }
+
+
+                 if(isset($invoicedata[4]->particulars))
+             {
+                 $sn4=$invoicedata[4]->sn;
+                 $particulars4=$invoicedata[4]->particulars;
+                 $quantity4=$invoicedata[4]->quantity;
+                 $rate4=$invoicedata[4]->rate;
+                 $amount4=$invoicedata[4]->amount;
+                 $itemtype4=$invoicedata[4]->item_type;
+
+             }
+             else
+             {
+                $sn4=null;
+                $particulars4=null;
+                $quantity4=null;
+                $rate4=null;
+                $amount4=0;
+                $itemtype4=null;
+
+             }
+
+             $totalamt=$invoicetotal[0]->total_amt;
+             $taxableamt=$invoicetotal[0]->taxable_amt;
+             $vat=$invoicetotal[0]->vat;
+             $totalamtwithvat=$invoicetotal[0]->totalamtwithvat;
+             $user=$invoicetotal[0]->user;
+
+        date_default_timezone_set("Asia/Kathmandu");
+        $todaydate=date("h:i:sa");
+        log::logs("Invoice Pdf Print/Downloaded/Viewed; BiltiNo:$biltino; Consignor:$consignor; Consingee:$consignee;");
+        $reprintname=session('data');
+         $pdf=App::make('dompdf.wrapper');
+         $data="
+          <table style='border:none;'>
+         <tr><td><p style='font-size: 25px; margin-left: 220px; font-style:bold;'>Om Laxmi Dhuwani Sewa</p></td></tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Main Branch: Biratnagar</p></td>
+         <td><p style='font-size:15px; margin-top:0px; text-align:right;'>Birtamode Branch: Birtamode</p></td></tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Opposite Of Bijuli Office</p></td>
+         <td><p style='font-size:15px; margin-top:0px;'>Harkalal Marga</p></td>
+         </tr>
+         <tr><td><p style='font-size:15px; margin-top:0px;'>Phone Number: 9802723942/9802753385/021-535671</p></td>
+         <td><p style='font-size:15px; margin-top:0px;'>Phone Number:9852023942</p></td>
+         </tr>
+
+         <tr><td><p style='margin-top:0px; font-size:20px; font-style:bold; margin-left:310px;'>Invoice</p></td></tr>
+         <tr><td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Bilti Number: </label>$biltino</p></td>
+
+       <td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Invoice-Date: </label> $date</p></td>
+         </tr>
+         <hr>
+         </table>
+         <table style='border:none;'>
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor: </label> $consignor</p></td>
+         <td><p style='font-size:14px; margin-left:100px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee: </label> $consignee</p></td>
+         </tr>
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Address: </label> $consignoradd</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Address: </label> $consigneeadd</p></td>
+         </tr>
+
+                  <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Pan-No: </label> $consignorpan</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Pan-No: </label> $consigneepan</p></td>
+         </tr>
+                  <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Number: </label>$consignorbill</p></td>
+         <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Amount: </label> $consignorbillamt</p></td>
+         </tr>
+
+         <tr>
+         <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Mode-Of-Payement: </label> $modeofpayment</p></td>
+         </tr>
+         <hr>
+         </table>
+         <table style='height:0mm; width:100%;'>
+         <br>
+         <style>
+         #data
+          {
+             border-bottom: 1px solid #ddd;
+                 }
+         </style>
+         <tr>
+         <th style='width:5%'  id='data'>SN</th>
+         <th style='width:30%' id='data'>Particulars</th>
+         <th style='width:20%' id='data'>Item-Type</th>
+         <th style='width:20%' id='data'>Quantity</th>
+         <th style='width:20%' id='data'>Rate</th>
+         <th style='width:20%' id='data'>Amount</th>
+         </tr>
+
+
+         <tr>
+         <td  style='text-align:center; ' id='data'> $sn</td>
+         <td  style='text-align:center; ' id='data'> $particulars</td>
+         <td  style='text-align:center; ' id='data'> $itemtype</td>
+         <td  style='text-align:center; ' id='data'> $quantity</td>
+         <td  style='text-align:center; ' id='data'> $rate</td>
+         <td  style='text-align:center; ' id='data'> $amount</td>
+         </tr>
+        
+        <tr>
+         <td  style='text-align:center; ' id='data'> $sn1</td>
+         <td  style='text-align:center; ' id='data'> $particulars1</td>
+         <td  style='text-align:center; ' id='data'> $itemtype1</td>
+         <td  style='text-align:center; ' id='data'> $quantity1</td>
+         <td  style='text-align:center; ' id='data'> $rate1</td>
+         <td  style='text-align:center; ' id='data'> $amount1</td>
+        </tr>  
+
+        <tr>
+         <td  style='text-align:center; ' id='data'> $sn2</td>
+         <td  style='text-align:center; ' id='data'> $particulars2</td>
+         <td  style='text-align:center; ' id='data'> $itemtype2</td>
+         <td  style='text-align:center; ' id='data'> $quantity2</td>
+         <td  style='text-align:center; ' id='data'> $rate2</td>
+         <td  style='text-align:center; ' id='data'> $amount2</td>
+        </tr>
+        
+        <tr>
+         <td  style='text-align:center; ' id='data'> $sn3</td>
+         <td  style='text-align:center; ' id='data'> $particulars3</td>
+         <td  style='text-align:center; ' id='data'> $itemtype3</td>
+         <td  style='text-align:center; ' id='data'> $quantity3</td>
+         <td  style='text-align:center; ' id='data'> $rate3</td>
+         <td  style='text-align:center; ' id='data'> $amount3</td>
+        </tr>
+            
+        <tr>
+         <td  style='text-align:center; ' id='data'> $sn4</td>
+         <td  style='text-align:center; ' id='data'> $particulars4</td>
+         <td  style='text-align:center; ' id='data'> $itemtype4</td>
+         <td  style='text-align:center; ' id='data'> $quantity4</td>
+         <td  style='text-align:center; ' id='data'> $rate4</td>
+         <td  style='text-align:center; ' id='data'> $amount4</td>
+        </tr>
+            
+         </table>
+
+         <table>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Total Amount:  $totalamt</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Taxable Amount:  $taxableamt</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Vat:  $vat</p></td>
+         </tr>
+         <tr>
+         <td><p style='margin-left:470px; margin-top:0px;'>Total Amount With Vat:  $totalamtwithvat</p></td>
+         
+         </tr>
+         </table>
+         <p>Created By: {$user}</p>
+         <p>Reprinted By: {$reprintname}</p>
+         <p style='text-align:right'>Reprint Time: {$todaydate}</p>
+
+";
+         $pdf->loadHTML($data);
+         return $pdf->stream();
+
+             }
+
+             public function allinvoicepdf()
+             {
+                $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->orderBy('date')->get();
+                log::logs("User Downloaded/Viewed/Printed Whole Invoice Data ");
+                $pdf=PDF::loadView('allinvoicepdf',['data'=>$result,''])->setPaper('a4', 'landscape');
+                return $pdf->stream();
+             }
+
+
+
 
 
 }
