@@ -371,6 +371,7 @@ class invoicesubmit extends Controller
 
     }
 
+
     public function invoicepdf(Request $req,$id)
     {
         $invoicedata=DB::table('invoice')->where('bilti_no',$id)->get();
@@ -509,10 +510,8 @@ class invoicesubmit extends Controller
          <tr><td><p style='font-size:15px; margin-top:0px;'>Phone Number: 9802723942/9802753385/021-535671</p></td>
          <td><p style='font-size:15px; margin-top:0px;'>Phone Number:9852023942</p></td>
          </tr>
-
          <tr><td><p style='margin-top:0px; font-size:20px; font-style:bold; margin-left:310px;'>Invoice</p></td></tr>
          <tr><td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Bilti Number: </label>$biltino</p></td>
-
        <td><p><label style='margin-top:0px; font-style:bold; font-size:15px;'>Invoice-Date: </label> $date</p></td>
          </tr>
          <hr>
@@ -526,7 +525,6 @@ class invoicesubmit extends Controller
          <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Address: </label> $consignoradd</p></td>
          <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Address: </label> $consigneeadd</p></td>
          </tr>
-
                   <tr>
          <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Pan-No: </label> $consignorpan</p></td>
          <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignee-Pan-No: </label> $consigneepan</p></td>
@@ -535,7 +533,6 @@ class invoicesubmit extends Controller
          <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Number: </label>$consignorbill</p></td>
          <td><p style='font-size:14px; margin-left:100px;; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Consignor-Bill-Amount: </label> $consignorbillamt</p></td>
          </tr>
-
          <tr>
          <td><p style='font-size:14px; margin-left:0px; margin-top:0px;'><label style='margin-top:0px; font-style:bold; font-size:15px;'>Mode-Of-Payement: </label> $modeofpayment</p></td>
          </tr>
@@ -557,8 +554,6 @@ class invoicesubmit extends Controller
          <th style='width:20%' id='data'>Rate</th>
          <th style='width:20%' id='data'>Amount</th>
          </tr>
-
-
          <tr>
          <td  style='text-align:center; ' id='data'> $sn</td>
          <td  style='text-align:center; ' id='data'> $particulars</td>
@@ -576,7 +571,6 @@ class invoicesubmit extends Controller
          <td  style='text-align:center; ' id='data'> $rate1</td>
          <td  style='text-align:center; ' id='data'> $amount1</td>
         </tr>  
-
         <tr>
          <td  style='text-align:center; ' id='data'> $sn2</td>
          <td  style='text-align:center; ' id='data'> $particulars2</td>
@@ -605,7 +599,6 @@ class invoicesubmit extends Controller
         </tr>
             
          </table>
-
          <table>
          <tr>
          <td><p style='margin-left:470px; margin-top:0px;'>Total Amount:  $totalamt</p></td>
@@ -624,24 +617,69 @@ class invoicesubmit extends Controller
          <p>Created By: {$user}</p>
          <p>Reprinted By: {$reprintname}</p>
          <p style='text-align:right'>Reprint Time: {$todaydate}</p>
-
 ";
          $pdf->loadHTML($data);
          return $pdf->stream();
 
              }
 
-             public function allinvoicepdf()
-             {
-                $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->orderBy('date')->get();
-                log::logs("User Downloaded/Viewed/Printed Whole Invoice Data ");
-                $pdf=PDF::loadView('allinvoicepdf',['data'=>$result,''])->setPaper('a4', 'landscape');
-                return $pdf->stream();
-             }
+    public function allinvoicepdf()
+    {
+        $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->orderBy('date')->get();
+        log::logs("User Downloaded/Viewed/Printed Whole Invoice Data ");
+        $pdf=PDF::loadView('allinvoicepdf',['data'=>$result])->setPaper('a4', 'landscape');
+        return $pdf->stream();
+     }
 
+     public function searchinvoicebybilti(Request $req)
+     {
+        $data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('invoice.bilti_no',$req->biltinumber)->get();
+        log::logs("User Searched The Invoice By Bilti Number Bilti No:$req->biltinumber");
+        return View('/showinvoicebybilti',['data'=>$data]);
+     }
 
+     public function searchinvoicebydate(Request $req)
+     {
+        $data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('invoice.date',$req->date)->paginate(10);
+        log::logs("User Searched The Invoice By Date; Invoice-Date:$req->date");
+        return View('/showinvoicebydate',['data'=>$data]);  
+     }
+     public function allinvoicepdfbydate($date)
+     {
 
+        $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('date',$date)->get();
+        log::logs("User Downloaded/Viewed/Printed Invoice Data By Date; Date:$date");
+        $pdf=PDF::loadView('allinvoicepdfbydate',['data'=>$result])->setPaper('a4', 'landscape');
+        return $pdf->stream();
+     }
+     public function searchinvoicebyconsignor(Request $req)
+     {
+        $data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('invoice.consignor',$req->consignor)->paginate(10);
+        log::logs("User Searched The Invoice By Consignor Name; Consignor:$req->consignor");
+        return View('/showinvoicebyconsignor',['data'=>$data]);  
+     }
+     public function allinvoicepdfbyconsignor($consignor)
+     {
+        $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('consignor',$consignor)->get();
+        log::logs("User Downloaded/Viewed/Printed Invoice Data By Consignor Name; Consignor:$consignor");
+        $pdf=PDF::loadView('allinvoicepdfbyconsignor',['data'=>$result,'consignor'=>$result[0]->consignor,'address'=>$result[0]->consignor_address,'pan'=>$result[0]->consignor_pan_no])->setPaper('a4', 'landscape');
+        return $pdf->stream();
+     }
 
+     public function searchinvoicebyconsignee(Request $req)
+     {
+        $data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('invoice.consignee',$req->consignee)->paginate(10);
+        log::logs("User Searched The Invoice By Consignee Name; Consignee:$req->consignee");
+        return View('/showinvoicebyconsignee',['data'=>$data]);  
+     }
+
+     public function allinvoicepdfbyconsignee($consignee)
+     {
+        $result=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->where('consignee',$consignee)->get();
+        log::logs("User Downloaded/Viewed/Printed Invoice Data By Consignee Name; Consignee:$consignee");
+        $pdf=PDF::loadView('allinvoicepdfbyconsignee',['data'=>$result,'consignee'=>$result[0]->consignee,'address'=>$result[0]->consignee_address,'pan'=>$result[0]->consignee_pan_no])->setPaper('a4', 'landscape');
+        return $pdf->stream();
+     }
 
 }
 ?>

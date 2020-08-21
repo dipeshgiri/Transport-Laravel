@@ -1,0 +1,45 @@
+#head
+{
+	text-align:left;
+	font-size:30px;
+	font-style: bold;
+	margin-top:30px;
+}
+#headbelow
+{
+	text-align:left;
+	font-size:15px;
+	margin-left:10px;
+}
+#para
+{
+	text-align: left;
+	font-style:bold;
+	font-size:20px;
+}
+.btn
+{
+	margin-top:10px;
+}
+
+h1
+{
+	text-align:center;
+}
+
+#table #biltino, #date,#partyname,#taxamt,#vatamt,#totalamt,#pan
+{
+	width:20px;
+}
+
+.address, .contact, .record
+{
+	text-align: center;
+	font-size:25px;
+}
+#page
+{
+	text-align:left;
+	font-weight:bold;
+}
+

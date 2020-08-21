@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" href="css/allinvoicepdf.css">
 
-	<title>All Invoice Data</title>
+	<title>Invoice Data By Dates</title>
 </head>
 <body>
 	<h1>Om Laxmi Dhuwani Sewa</h1>
@@ -56,7 +56,6 @@
          </table>
          <br>
          <p>Created By: {{session('data')}}</p>
-         <p id="date">Created At: {{date("h:i:sa")}}</p>
-       
+         <p id="date">Created At: {{date("h:i:sa")}}</p>       
 </body>
 </html>

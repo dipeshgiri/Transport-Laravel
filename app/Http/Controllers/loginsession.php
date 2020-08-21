@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\userlogin;
 use Illuminate\Support\Facades\Hash;
+use log;
 
 class loginsession extends Controller
 {
@@ -16,6 +17,7 @@ class loginsession extends Controller
     	if(Hash::check($password,$user[0]->password))
     	{
             $req->session()->put('data',$user[0]->user_name);
+            log::logs('User Logged In');
             return redirect('/home');
         }
         else

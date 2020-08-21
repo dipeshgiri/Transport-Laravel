@@ -1,0 +1,48 @@
+h1
+{
+	text-align:center;
+
+}
+.address, .contact, .record
+{
+	text-align: center;
+	font-size:25px;
+}
+
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:70px;
+}
+
+#sn
+{
+	width:-20px;
+}
+#date
+{
+	text-align:right;
+}
+
+.consignor
+{
+	font-size:20px;
+	font-style:bold;
+	margin-left:10px;
+}
+.address2
+{
+	font-size:20px;
+	font-style:bold;
+	margin-left:20px;
+}
+
+
+.pan
+{
+	font-size:20px;
+	font-style:bold;
+	margin-left:20px;
+}
+

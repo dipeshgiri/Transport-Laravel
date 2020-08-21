@@ -8,16 +8,23 @@ h1
 	text-align: center;
 	font-size:25px;
 }
+.Date
+{
+	text-align:center;
+	font-style:bold;
 
+}
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
-  width:50px;
-}
 
-#date
-{
-	text-align: right;
 }
- 
+#createdby
+{
+	float:left;
+}
+#createdat
+{
+	float: right;
+}
