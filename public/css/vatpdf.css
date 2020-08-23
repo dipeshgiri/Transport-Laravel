@@ -20,11 +20,29 @@ table, th, td {
   border-collapse: collapse;
 
 }
+
 #createdby
 {
 	float:left;
 }
+
 #createdat
 {
 	float: right;
+}
+
+#total
+{
+	font-style:bold;
+}
+.partyname
+{
+	font-size:18px;
+	font-style:bold;
+	text-align:center;
+}
+#mof
+{
+	font-style:bold;
+	margin-left:270px;
 }

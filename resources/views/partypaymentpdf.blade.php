@@ -8,8 +8,9 @@
 	<h1>Om Laxmi Dhuwani Sewa</h1>
 	<p class="address">Biratnagar,Opposite Of Nepal Electricity Authority</p>
 	<p class="contact">Contact Number:021-535671/9802723942/9802753385</p>
-	<p class="record">Vat Details</p>
-   <p class="Date">From: {{$start}} To: {{$end}}</p>
+	<p class="record">Party Payment Details</p>
+   <p class="partyname">PartyName: {{$partyname}}</p>
+   <p class="Date">From: {{$start}} To: {{$end}} <label id="mof">Mode Of Payment: {{$mof}}</label></p>
          <table>
          	<thead>
          		<tr>
@@ -27,11 +28,11 @@
                   <td>{{$i->bilti_no}}</td>
                   <td>{{$i->date}}</td>
                   @if($i->mode_of_payment=='To Pay')
-                  <td>{{$i->consignee}}</td>
-                  <td>{{$i->consignee_pan_no}}</td>
-                  @elseif($i->mode_of_payment=='Due' || $i->mode_of_payment=='Paid')
                   <td>{{$i->consignor}}</td>
                   <td>{{$i->consignor_pan_no}}</td>
+                  @elseif($i->mode_of_payment=='Due' || $i->mode_of_payment=='Paid')
+                  <td>{{$i->consignee}}</td>
+                  <td>{{$i->consignee_pan_no}}</td>
                   @endif
                   <td>{{$i->total_amt}}</td>
                   <td>{{$i->vat}}</td>

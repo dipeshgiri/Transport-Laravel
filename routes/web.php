@@ -73,6 +73,13 @@ Route::view('/vat','vat');
 Route::get('/vattranscation','vat@vattranscation');
 //Vat PDF
 Route::get('/vatpdf/{start}/{end}','vat@vatpdf');
+//Party Payment Details
+Route::view('/PartyPaymentDetails','partypaymentdetails');
+Route::get('/partypayment','partypaymentdetails@partydetails');
+//Party Payment Details Pdf
+Route::get('/partypaymentpdf/{partyname}/{start}/{end}/{mof}','partypaymentdetails@partypaymentpdf');
+//party payment detail paid confirm
+Route::get('/partypaymentpaid/{partyname}/{start}/{end}','partypaymentdetails@partypaymentpaid');
 
 
 });

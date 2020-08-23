@@ -42,4 +42,49 @@ h1
 	text-align:left;
 	font-weight:bold;
 }
+th .total
+{
+	margin-left:550px;
+}
+th .totalsum
+{
+	margin-left:160px;
+}
+th .vat
+{
+	margin-left:100px;
+}
+th .totalamt
+{
+	margin-left:100px;
+}
+.consignor
+{
+	font-size:20px;
+	font-style:bold;
+}
+.mof
+{
+	margin-left:100px;
+}
+.partydate
+{
+	margin-left:100px;
+}
 
+th .partytotal
+{
+	margin-left:550px;
+}
+th .partytotalsum
+{
+	margin-left:160px;
+}
+th .partyvat
+{
+	margin-left:130px;
+}
+th .partytotalamt
+{
+	margin-left:130px;
+}

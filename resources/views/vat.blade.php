@@ -16,10 +16,10 @@
                  	@csrf
                      <div class="form-row">
                      <div class="col">
-                     <input type="text" name="start" class="form-control" placeholder="Starting Date">
+                     <input type="text" name="start" class="form-control" placeholder="Starting Date" required/>
                       </div>
                      <div class="col">
-                     <input type="text" name="end" class="form-control" placeholder="Ending Date">
+                     <input type="text" name="end" class="form-control" placeholder="Ending Date" required/>
                      </div>
                      </div>
                      <button type="submit" class="btn btn-info" id="btn">Submit</button>
@@ -67,8 +67,15 @@
 	</tr>
 	@endforeach
 </table>
-	<div>
-		<br>
+		<div>
+		<table class="table" id="table">
+		<thead>
+			<tr>
+		<th><label class="total">Total</label><label class="totalsum">{{$totalsum}}</label><label class="vat">{{$vat}}</label><label class="totalamt">{{$totalamt}}</label></th>
+		</tr>
+		</thead>
+		</table>
+
 		<p id="page">Page: {{$record->currentPage()}}, Showing {{$record->count()}} Records On This Page</p>
 		<p id="page">Total Record: {{$record->total()}}</p>
 		<br>

@@ -20,16 +20,22 @@ class vat extends Controller
     {
     	$start=$req->start;
     	$end=$req->end;
-    	$data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->whereBetween('date',[$start,$end])->orderBy('date')->paginate(10);
+    	$data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->whereBetween('date',[$start,$end])->orderBy('date')->groupBy('invoicetotal.bilti_no')->paginate(10);
+        $totalsum=$data->sum('total_amt');
+        $vat=$data->sum('vat');
+        $totalamt=$data->sum('totalamtwithvat');
     	log::logs("User Viewed The Vat Details; Start-Date:$start, End-Date:$end");
-    	return View('/vat',['record'=>$data,'start'=>$start,'end'=>$end]);
+    	return View('/vat',['record'=>$data,'start'=>$start,'end'=>$end,'totalsum'=>$totalsum,'vat'=>$vat,'totalamt'=>$totalamt]);
 
     }
     public function vatpdf($start,$end)
     {
-    	$data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->whereBetween('date',[$start,$end])->orderBy('date')->get();
+    	$data=DB::table('invoice')->join('invoicetotal','invoicetotal.bilti_no','invoice.bilti_no')->whereBetween('date',[$start,$end])->orderBy('date')->groupBy('invoicetotal.bilti_no')->get();
+        $totalsum=$data->sum('total_amt');
+        $vat=$data->sum('vat');
+        $totalamt=$data->sum('totalamtwithvat');
     	log::logs("User Downloaded/Printed Vat Details; Start-Date:$start, End-Date:$end");
-    	$pdf=PDF::loadView('/vatpdf',['data'=>$data,'start'=>$start,'end'=>$end]);
+    	$pdf=PDF::loadView('/vatpdf',['data'=>$data,'start'=>$start,'end'=>$end,'totalsum'=>$totalsum,'vat'=>$vat,'totalamt'=>$totalamt]);
         return $pdf->stream();
     }
 }
