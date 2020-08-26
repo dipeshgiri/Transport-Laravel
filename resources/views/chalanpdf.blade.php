@@ -17,7 +17,6 @@
             @foreach($chalandetails as $i)
             <p><label id="chalanno">Chalan No: {{$i->chalan_no}}</label> <label id="drivername">Driver-Name: {{$i->driver_name}}</label> <label id="date">Date: {{$i->date}}</label>  <label id="departure">Departure: {{$i->departure_location}}</label> <label id="destination">Destination: {{$i->destination_location}}</label><label id="loadingcharge">Truck-Number: {{$i->gadi_no}}</label> </p>
             @endforeach
-
             <hr>
             <table id="datatable">
                     <thead>

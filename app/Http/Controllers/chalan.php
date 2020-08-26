@@ -82,6 +82,7 @@ class chalan extends Controller
         date_default_timezone_set("Asia/Kathmandu");
         $chalan_details->created_at=date("h:i:sa");
         $chalan_details->save();
+        log::logs("User Created Chalan; Chalan-No: $chalanno; Driver-Name: $req->driver_name; Truck-Number: $req->truck_number");
         return redirect()->route('chalanpdf', [$chalanno]);
     }
 
@@ -89,9 +90,29 @@ class chalan extends Controller
     {
         $chalandetails=DB::table('chalan_details')->where('chalan_no',$chalanno)->get();
         $chalandata=DB::table('invoice')->join('invoicetotal','invoice.bilti_no','invoicetotal.bilti_no')->join('chalan_bilti','invoice.bilti_no','chalan_bilti.bilti_no')->where('chalan_bilti.chalan_no',$chalanno)->get();
+        log::logs("User Printed The Chalan; Chalan-NO: $chalanno");
         $pdf=PDF::loadView('/chalanpdf',['chalandetails'=>$chalandetails,'chalandata'=>$chalandata])->setPaper('a4', 'landscape');
         return $pdf->stream(); 
 
+
+    }
+
+    public function showallchalan()
+    {
+        $chalandata=DB::table('chalan_details')->paginate(10);
+        log::logs("User Searched All The Chalan");
+        return view('/showchalan',['data'=>$chalandata]);
+    }
+
+    public function exportallchalandata()
+    {
+        $chalandata=DB::table('chalan_details')->get();
+        $totalsum=$chalandata->sum('total_amt');
+        $vat=$chalandata->sum('vat_amt');
+        $totalamt=$chalandata->sum('totalamtwithvat');
+        log::logs("User Exported/Printed The Chalan Details");
+        $pdf=PDF::loadView('/exportchalandata',['chalandetails'=>$chalandata,'totalsum'=>$totalsum,'vat'=>$vat,'totalamtwithvat'=>$totalamt])->setPaper('a4', 'landscape');
+        return $pdf->stream(); 
 
     }
 }

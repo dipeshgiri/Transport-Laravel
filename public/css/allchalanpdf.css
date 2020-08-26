@@ -1,0 +1,27 @@
+h1
+{
+	text-align:center;
+
+}
+.address, .contact, .record
+{
+	text-align: center;
+	font-size:25px;
+}
+
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:90px;
+}
+
+#date
+{
+	text-align: right;
+}
+ 
+#total
+{
+	font-style:bold;
+}

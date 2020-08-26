@@ -71,9 +71,17 @@ Route::get('/allinvoicepdfbyconsignee/{consignee}','invoicesubmit@allinvoicepdfb
 //Chalan Details
 Route::get('/chalan','chalan@chalandetails');
 Route::post('/chalansubmit','chalan@chalansubmit');
+
 //Search Chalan
 Route::view('/searchchalan','chalansearch');
+Route::get('/showallchalan','chalan@showallchalan');
+
+
+
+//chalan pdf
 Route::get('/chalanpdf/{chalanno}','chalan@chalanpdf')->name('chalanpdf');
+Route::get('/exportchalandata','chalan@exportallchalandata');
+
 
 
 //Vat
