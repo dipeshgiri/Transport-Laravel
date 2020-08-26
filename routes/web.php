@@ -68,6 +68,14 @@ Route::get('/allinvoicepdfbyconsignor/{consignor}','invoicesubmit@allinvoicepdfb
 //All Invoice Pdf By Consignee
 Route::get('/allinvoicepdfbyconsignee/{consignee}','invoicesubmit@allinvoicepdfbyconsignee');
 
+//Chalan Details
+Route::get('/chalan','chalan@chalandetails');
+Route::post('/chalansubmit','chalan@chalansubmit');
+//Search Chalan
+Route::view('/searchchalan','chalansearch');
+Route::get('/chalanpdf/{chalanno}','chalan@chalanpdf')->name('chalanpdf');
+
+
 //Vat
 Route::view('/vat','vat');
 Route::get('/vattranscation','vat@vattranscation');
@@ -80,7 +88,6 @@ Route::get('/partypayment','partypaymentdetails@partydetails');
 Route::get('/partypaymentpdf/{partyname}/{start}/{end}/{mof}','partypaymentdetails@partypaymentpdf');
 //party payment detail paid confirm
 Route::get('/partypaymentpaid/{partyname}/{start}/{end}','partypaymentdetails@partypaymentpaid');
-
 
 });
 ?>

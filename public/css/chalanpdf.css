@@ -1,0 +1,65 @@
+#heading
+{
+	font-size: 25px; 
+	margin-left:380px;
+	font-style:bold;
+}
+
+#branch, #phoneno
+{
+	font-size:15px; 
+	margin-top:0px;
+}
+
+#branch2,#phoneno2
+{
+	font-size:15px; 
+	margin-top:0px;
+	margin-left:150px; 
+}
+
+#table
+{
+	border:none;
+}
+
+#chalan
+{
+	margin-top:0px; 
+	font-size:20px; 
+	font-style:bold;
+	margin-left:480px;
+}
+#chalanno,#drivername,#departure,#destination,#date,#loadingcharge
+{
+	font-style:bold;
+}
+
+#drivername,#date,#departure,#destination,#loadingcharge
+{
+	margin-left:10px;
+}
+
+#datatable,th,#tabledata{
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:113px;
+}
+
+#totalamt,#vatamt,#totalamtwithvat,#time,#user
+{
+	font-style:bold;
+	font-size:20px;
+}
+#vatamt,#totalamtwithvat
+{
+	margin-left:130px
+}
+#user
+{
+	float:left;
+}
+#time
+{
+	float:right;
+}
