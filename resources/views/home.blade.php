@@ -16,7 +16,7 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Daily', 'Invoices'],
+          ['Date', 'No Of Invoices'],
           ['1st May',  1000],
           ['2nd May',  1170],
           ['3rd May',  500],
@@ -130,9 +130,9 @@
 
         var data = google.visualization.arrayToDataTable([
           ['Truck', 'No of Loads'],
-          ['Na 3 Kha 335', 40],
-          ['Na 3 Kha 3983',50],
-          ['Ba 3 Kha 294', 100]
+          ['Na 3 Kha 335', {{$data335}}],
+          ['Na 3 Kha 3983',{{$data3983}}],
+          ['Ba 3 Kha 294', {{$data294}}]
         ]);
 
         var options = {

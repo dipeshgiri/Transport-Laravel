@@ -34,7 +34,7 @@ Route::get('/logout',function()
 Route::group(['middleware'=>['loginchecker']],function()
 {
 //Dashboard
-Route::view('/home','home');
+Route::get('/home','homegraph@graphdata');
 //invoice page
 Route::view('/invoice','invoice');
 Route::post("/submit",'invoicesubmit@submit');
